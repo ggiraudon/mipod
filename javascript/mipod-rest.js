@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -17,20 +18,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+exports.__esModule = true;
 /// <reference path="node/node.d.ts" />
 /// <reference path="express/express.d.ts" />
 /// <reference path="body-parser/body-parser.d.ts" />
-var express = require('express');
-var bodyParser = require('body-parser');
-var mipod = require('./main');
-var O = require('./Options');
-
+var express = require("express");
+var bodyParser = require("body-parser");
+var mipod = require("./main");
+var O = require("./Options");
 "use strict";
 var app = express();
 app.use(bodyParser.json());
-var opts = O.Options.default();
+var opts = O.Options["default"]();
 var port = 80;
-
 function usage() {
     console.log("Usage: node mipod-rest [options=values]");
     console.log("");
@@ -49,7 +49,6 @@ function usage() {
     console.log("");
     console.log("More documentation available on https://github.com/jotak/mipod");
 }
-
 var mapParams = {
     "--port": function (val) {
         port = +val;
@@ -85,10 +84,8 @@ var mapParams = {
         process.exit(0);
     }
 };
-
 mapParams["-p"] = mapParams["--port"];
 mapParams["-h"] = mapParams["--help"];
-
 process.argv.forEach(function (arg, index, array) {
     if (index > 1) {
         var key = arg;
@@ -101,16 +98,14 @@ process.argv.forEach(function (arg, index, array) {
         var fct = mapParams[key];
         if (fct) {
             fct(value);
-        } else {
+        }
+        else {
             console.log("Unknown option " + arg);
             usage();
             process.exit(0);
         }
     }
 });
-
 mipod.asRest(app, opts);
-
 app.listen(port);
-
 console.log('Server running on port ' + port);

@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -17,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-var tools = require('./tools');
-
+exports.__esModule = true;
+exports.parse = void 0;
+var tools = require("./tools");
 "use strict";
-
 /* MPD DATA:
 volume?: number;
 repeat?: boolean;
@@ -60,29 +61,35 @@ function parse(response) {
         asMap['audioSampleDepth'] = arr[1];
         asMap['audioChannels'] = arr[2];
     }
-    ["volume", "playlist", "playlistlength", "mixrampdb", "mixrampdelay", "song", "songid", "elapsed", "bitrate", "nextsong", "nextsongid", "xfade", "time", "audioSampleRate", "audioSampleDepth", "audioChannels"].forEach(function (key) {
+    ["volume", "playlist", "playlistlength", "mixrampdb", "mixrampdelay", "song", "songid", "elapsed", "bitrate", "nextsong", "nextsongid", "xfade", "time", "audioSampleRate", "audioSampleDepth", "audioChannels"]
+        .forEach(function (key) {
         var asNumber = +asMap[key];
         if (!isNaN(asNumber)) {
             asMap[key] = asNumber;
-        } else {
+        }
+        else {
             delete asMap[key];
         }
     });
     ["repeat", "random", "single", "consume"].forEach(function (key) {
         if (asMap[key] === "1") {
             asMap[key] = true;
-        } else if (asMap[key] === "0") {
+        }
+        else if (asMap[key] === "0") {
             asMap[key] = false;
-        } else {
+        }
+        else {
             delete asMap[key];
         }
     });
     if (asMap.hasOwnProperty('audioChannels')) {
         if (asMap['audioChannels'] > 2) {
             asMap['audioChannels'] = "Multichannel";
-        } else if (asMap['audioChannels'] === 2) {
+        }
+        else if (asMap['audioChannels'] === 2) {
             asMap['audioChannels'] = "Stereo";
-        } else {
+        }
+        else {
             asMap['audioChannels'] = "Mono";
         }
     }

@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -17,6 +18,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+exports.__esModule = true;
+exports.mapEquals = exports.splitOnce = exports.extend = exports.override = void 0;
 /**
 * Overrides content of 'receiver' with 'provider'
 */
@@ -26,10 +29,12 @@ function override(receiver, provider) {
             if ({}.hasOwnProperty.call(receiver, prop)) {
                 if (typeof provider[prop] === 'object') {
                     this.override(receiver[prop], provider[prop]);
-                } else {
+                }
+                else {
                     receiver[prop] = provider[prop];
                 }
-            } else {
+            }
+            else {
                 receiver[prop] = provider[prop];
             }
         }
@@ -37,7 +42,6 @@ function override(receiver, provider) {
     return receiver;
 }
 exports.override = override;
-
 /**
 * Extend missing content of 'receiver' with 'provider'
 */
@@ -48,7 +52,8 @@ function extend(receiver, provider) {
                 if (typeof provider[prop] === 'object') {
                     this.extend(receiver[prop], provider[prop]);
                 }
-            } else {
+            }
+            else {
                 receiver[prop] = provider[prop];
             }
         }
@@ -56,17 +61,16 @@ function extend(receiver, provider) {
     return receiver;
 }
 exports.extend = extend;
-
 function splitOnce(str, separator) {
     var i = str.indexOf(separator);
     if (i >= 0) {
         return { key: str.slice(0, i), value: str.slice(i + separator.length) };
-    } else {
+    }
+    else {
         return { key: "", value: str.slice(i + separator.length) };
     }
 }
 exports.splitOnce = splitOnce;
-
 function mapEquals(map1, map2, keysToCheck) {
     for (var i = 0; i < keysToCheck.length; i++) {
         var key = keysToCheck[i];

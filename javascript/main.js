@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -17,32 +18,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+exports.__esModule = true;
+exports.asWebSocket = exports.asRest = void 0;
 /// <reference path="node/node.d.ts" />
 /// <reference path="express/express.d.ts" />
 /// <reference path="socket.io/socket.io.d.ts" />
-var routes = require('./routes');
-var websocket = require('./websocket');
-var tools = require('./tools');
-var lib = require('./Library');
-var MpdClient = require('./MpdClient');
-var O = require('./Options');
-var typeCheck = require('type-check');
-
+var routes = require("./routes");
+var websocket = require("./websocket");
+var tools = require("./tools");
+var lib = require("./Library");
+var MpdClient = require("./MpdClient");
+var O = require("./Options");
+var typeCheck = require("type-check");
 "use strict";
-
 function asRest(expressApp, options) {
     registerMethod(expressApp, routes.register, options);
 }
 exports.asRest = asRest;
-
 function asWebSocket(socketMngr, options) {
     registerMethod(socketMngr, websocket.register, options);
 }
 exports.asWebSocket = asWebSocket;
-
 function registerMethod(methodHandler, methodRegistration, options) {
-    var opts = options ? tools.extend(options, O.Options.default()) : O.Options.default();
-
+    var opts = options ? tools.extend(options, O.Options["default"]()) : O.Options["default"]();
     // Since this module can be imported from JS applications (non-typescript), we'll add some runtime type-check on Options
     var scheme = "{dataPath: String, useLibCache: Boolean, prefix: String, loadLibOnStartup: Boolean, mpdHost: String, mpdPort: Number, enableStats: Boolean}";
     if (!typeCheck.typeCheck(scheme, opts)) {
@@ -50,7 +48,6 @@ function registerMethod(methodHandler, methodRegistration, options) {
         console.log("Options provided: " + JSON.stringify(options));
         console.log("Expected options scheme: " + scheme);
     }
-
     MpdClient.configure(opts.mpdHost, opts.mpdPort);
     var library = new lib.Library();
     library.setDataPath(opts.dataPath);

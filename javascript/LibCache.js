@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -19,12 +20,10 @@ SOFTWARE.
 */
 /// <reference path="node/node.d.ts" />
 /// <reference path="q/Q.d.ts" />
-var fs = require('fs');
-var q = require('q');
-
+var fs = require("fs");
+var q = require("q");
 "use strict";
-
-var LibCache = (function () {
+var LibCache = /** @class */ (function () {
     function LibCache() {
     }
     LibCache.loadCache = function (filepath) {
@@ -32,50 +31,51 @@ var LibCache = (function () {
         fs.readFile(filepath, { encoding: "utf8" }, function (err, data) {
             if (err) {
                 deferred.reject(err);
-            } else {
+            }
+            else {
                 var jsonContent = eval('(' + data + ')');
                 deferred.resolve(jsonContent);
             }
         });
         return deferred.promise;
     };
-
     LibCache.saveCache = function (filepath, data) {
         var deferred = q.defer();
         fs.writeFile(filepath, JSON.stringify(data), function (err) {
             if (err) {
                 deferred.reject(new Error(err.code));
-            } else {
+            }
+            else {
                 deferred.resolve("OK");
             }
         });
         return deferred.promise;
     };
-
     LibCache.loadTags = function (filepath) {
         var deferred = q.defer();
         fs.readFile(filepath, { encoding: "utf8" }, function (err, data) {
             if (err) {
                 deferred.reject(err);
-            } else {
+            }
+            else {
                 var jsonContent = eval('(' + data + ')');
                 deferred.resolve(jsonContent);
             }
         });
         return deferred.promise;
     };
-
     LibCache.saveTags = function (filepath, data) {
         var deferred = q.defer();
         fs.writeFile(filepath, JSON.stringify(data, null, 2), function (err) {
             if (err) {
                 deferred.reject(new Error(err.code));
-            } else {
+            }
+            else {
                 deferred.resolve("OK");
             }
         });
         return deferred.promise;
     };
     return LibCache;
-})();
+}());
 module.exports = LibCache;

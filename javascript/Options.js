@@ -19,8 +19,8 @@ SOFTWARE.
 */
 "use strict";
 var Options;
-(function (_Options) {
-    var Options = (function () {
+(function (Options_1) {
+    var Options = /** @class */ (function () {
         function Options(dataPath, useLibCache, prefix, loadLibOnStartup, mpdHost, mpdPort, enableStats) {
             this.dataPath = dataPath;
             this.useLibCache = useLibCache;
@@ -30,11 +30,11 @@ var Options;
             this.mpdPort = mpdPort;
             this.enableStats = enableStats;
         }
-        Options.default = function () {
+        Options["default"] = function () {
             return new Options("data", true, "", false, "localhost", 6600, true);
         };
         return Options;
-    })();
-    _Options.Options = Options;
+    }());
+    Options_1.Options = Options;
 })(Options || (Options = {}));
 module.exports = Options;

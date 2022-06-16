@@ -23,15 +23,13 @@ SOFTWARE.
 /// <reference path="socket.io/socket.io.d.ts" />
 
 import express = require('express');
-import http = require('http');
-import socketio = require('socket.io');
 import mipod = require('./main');
 import O = require('./Options');
 
 "use strict";
 var app = express();
-var httpServer = http.createServer(app);
-var websock = socketio.listen(httpServer);
+let httpServer = require('http').Server(app);
+let websock = require('socket.io')(httpServer);
 
 var opts: O.IOptions = O.Options.default();
 var port: number = 80;

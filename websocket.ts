@@ -335,7 +335,7 @@ function idleOnce(args: any) {
         var status: {[key: string]: any} = results[0];
         var current: MpdEntry = results[1];
         if (!MpdEntries.entryEquals(lastCurrent, current) || !tools.mapEquals(lastStatus, status, ["volume", "repeat", "random", "single", "consume", "state", "song", "songid"])) {
-            socketEmit(args.socketMngr.sockets, args.word, {"status": status, "current": current});
+            args.socketMngr.emit(args.word, {"status": status, "current": current});
             lastCurrent = current;
             lastStatus = status;
         }

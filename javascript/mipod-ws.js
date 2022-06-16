@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 Copyright (c) 2014 Joel Takvorian, https://github.com/jotak/mipod
@@ -17,23 +18,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+exports.__esModule = true;
 /// <reference path="node/node.d.ts" />
 /// <reference path="express/express.d.ts" />
 /// <reference path="socket.io/socket.io.d.ts" />
-var express = require('express');
-var http = require('http');
-var socketio = require('socket.io');
-var mipod = require('./main');
-var O = require('./Options');
-
+var express = require("express");
+var mipod = require("./main");
+var O = require("./Options");
 "use strict";
 var app = express();
-var httpServer = http.createServer(app);
-var websock = socketio.listen(httpServer);
-
-var opts = O.Options.default();
+var httpServer = require('http').Server(app);
+var websock = require('socket.io')(httpServer);
+var opts = O.Options["default"]();
 var port = 80;
-
 function usage() {
     console.log("Usage: node mipod-ws [options=values]");
     console.log("");
@@ -52,7 +49,6 @@ function usage() {
     console.log("");
     console.log("More documentation available on https://github.com/jotak/mipod");
 }
-
 var mapParams = {
     "--port": function (val) {
         port = +val;
@@ -88,10 +84,8 @@ var mapParams = {
         process.exit(0);
     }
 };
-
 mapParams["-p"] = mapParams["--port"];
 mapParams["-h"] = mapParams["--help"];
-
 process.argv.forEach(function (arg, index, array) {
     if (index > 1) {
         var key = arg;
@@ -104,18 +98,17 @@ process.argv.forEach(function (arg, index, array) {
         var fct = mapParams[key];
         if (fct) {
             fct(value);
-        } else {
+        }
+        else {
             console.log("Unknown option " + arg);
             usage();
             process.exit(0);
         }
     }
 });
-
 websock.on('connection', function (socket) {
     mipod.asWebSocket(socket, opts);
 });
-
 httpServer.listen(port, function () {
     console.log('Websocket listening on port ' + port);
 });
