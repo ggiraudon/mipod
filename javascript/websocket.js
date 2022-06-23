@@ -66,13 +66,23 @@ function register(socketMngr, prefix, library, enableStats) {
             socketEmit(socketMngr.sockets, word("ontag"), tag);
         });
     }
-    socketMngr.on("connection", function (socket) {
+    //socketMngr.on("connection", function (socket) {
+        /*
         var socketOn = function (word, func) {
             socket.on(word, function (body) {
                 console.log("Incomming on websocket: " + word);
                 func(body);
             });
         };
+        */
+        var socket = socketMngr;
+        var socketOn = function (word, func) {
+            socket.on(word, function (body) {
+                console.log("Incomming on websocket: " + word);
+                func(body);
+            });
+        }.bind(socket);
+
         socketOn(word("play"), function (body) {
             answerOnPromise(MpdClient.play(), socket, word("play"), body);
         });
@@ -257,7 +267,7 @@ function register(socketMngr, prefix, library, enableStats) {
                 });
             }
         });
-    });
+    //});
 }
 exports.register = register;
 function getStatusAndCurrent() {
